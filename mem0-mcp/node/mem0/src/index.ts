@@ -33,6 +33,17 @@ const ADD_MEMORY_TOOL: Tool = {
         type: 'string',
         description: "User ID for memory storage. If not provided explicitly, use a generic user ID like, 'mem0-mcp-user'",
       },
+      metadata: {
+        type: 'object',
+        description: 'Optional metadata for categorizing and organizing memories',
+        properties: {
+          category: {
+            type: 'string',
+            description: 'Category for the memory (e.g., "preferences", "technical_solutions", "project_details")',
+          },
+        },
+        additionalProperties: true,
+      },
     },
     required: ['content', 'userId'],
   },
@@ -72,12 +83,16 @@ const server = new Server(
 );
 
 // Helper function to add memories
-async function addMemory(content: string, userId: string) {
+async function addMemory(content: string, userId: string, metadata?: Record<string, any>) {
   try {
     const messages = [
       { role: 'user' as const, content }
     ];
-    await memoryClient.add(messages, { user_id: userId });
+    const options: any = { user_id: userId };
+    if (metadata) {
+      options.metadata = metadata;
+    }
+    await memoryClient.add(messages, options);
     return true;
   } catch (error) {
     console.error('Error adding memory:', error);
@@ -111,8 +126,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     
     switch (name) {
       case 'add-memory': {
-        const { content, userId } = args as { content: string, userId: string };
-        await addMemory(content, userId);
+        const { content, userId, metadata } = args as { content: string, userId: string, metadata?: Record<string, any> };
+        await addMemory(content, userId, metadata);
         return {
           content: [
             {

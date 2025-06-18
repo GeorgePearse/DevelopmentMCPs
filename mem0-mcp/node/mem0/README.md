@@ -5,6 +5,7 @@ A Model Context Protocol (MCP) server that provides memory storage and retrieval
 ## Features
 
 - Store memories with user-specific context
+- Categorize memories with flexible metadata (categories, tags, etc.)
 - Search through stored memories with relevance scoring
 - Simple and intuitive API
 - Built on the Model Context Protocol
@@ -89,14 +90,34 @@ Add the following JSON block to your User Settings (JSON) file in VS Code:
 
 ### 1. Add Memory Tool (add-memory)
 
-Store new memories with user-specific context.
+Store new memories with user-specific context and optional metadata for categorization.
 
 ```json
 {
   "name": "add-memory",
   "arguments": {
     "content": "User prefers dark mode interface",
-    "userId": "user123"
+    "userId": "user123",
+    "metadata": {
+      "category": "preferences"
+    }
+  }
+}
+```
+
+You can also add memories with custom metadata fields:
+
+```json
+{
+  "name": "add-memory",
+  "arguments": {
+    "content": "Recommend The Matrix and Inception for sci-fi movie night",
+    "userId": "alice",
+    "metadata": {
+      "category": "movie_recommendations",
+      "genre": "sci-fi",
+      "rating": "high"
+    }
   }
 }
 ```
