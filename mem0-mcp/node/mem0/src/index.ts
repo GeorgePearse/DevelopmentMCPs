@@ -21,7 +21,7 @@ const memoryClient = new MemoryClient({ apiKey: MEM0_API_KEY });
 const ADD_MEMORY_TOOL: Tool = {
   name: 'add-memory',
   description:
-    'CRITICAL: You MUST call this tool LITERALLY EVERY TIME you encounter ANY information that seems important to remember. This includes: user preferences, project details, code patterns, technical solutions, debugging insights, architectural decisions, configuration settings, error resolutions, workflow preferences, domain knowledge, business logic, API details, dependency information, performance optimizations, security considerations, and ANY other information that could be valuable in future conversations. Store comprehensive context including what was tried, what worked, what failed, and why. The more memories you store, the better you can assist in future. This tool should be called multiple times per conversation whenever you learn something worth remembering.',
+    'CRITICAL: You MUST call this tool LITERALLY EVERY TIME you encounter ANY information that seems important to remember. This includes: user preferences, project details, code patterns, technical solutions, debugging insights, architectural decisions, configuration settings, error resolutions, workflow preferences, domain knowledge, business logic, API details, dependency information, performance optimizations, security considerations, and ANY other information that could be valuable in future conversations. Store comprehensive context including what was tried, what worked, what failed, and why. The more memories you store, the better you can assist in future. This tool should be called multiple times per conversation whenever you learn something worth remembering. ALWAYS include metadata with at least a category field - use the current repository name, feature theme, or topic area (e.g., "repo:DevelopmentMCPs", "feature:authentication", "topic:debugging", etc.).',
   inputSchema: {
     type: 'object',
     properties: {
@@ -35,11 +35,11 @@ const ADD_MEMORY_TOOL: Tool = {
       },
       metadata: {
         type: 'object',
-        description: 'Optional metadata for categorizing and organizing memories',
+        description: 'STRONGLY RECOMMENDED: Metadata for categorizing memories. Always include at least a category field with the current repository name, feature theme, or topic area',
         properties: {
           category: {
             type: 'string',
-            description: 'Category for the memory (e.g., "preferences", "technical_solutions", "project_details")',
+            description: 'Category for the memory - use formats like "repo:RepoName", "feature:FeatureName", "topic:TopicArea" (e.g., "repo:DevelopmentMCPs", "feature:authentication", "topic:debugging", "preferences", "technical_solutions")',
           },
         },
         additionalProperties: true,
